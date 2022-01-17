@@ -1,0 +1,12 @@
+export { DiscordManager } from "./DiscordManager";
+export { IAction } from "./IAction";
+export { IBitBotConfig } from "./IBitBotConfig";
+export { IModule } from "./IModule";
+export { Debug } from "./Debug";
+export { IModuleAction } from "./IModuleAction";
+export { IModuleLoadScript } from "./IModuleLoadScript";
+export { IModuleScript } from "./IModuleScript";
+export { Latency } from "./Latency";
+export { LogicManager } from "./LogicManager";
+export { LogicModule } from "./LogicModule";
+export { BitBot } from "./BitBot";

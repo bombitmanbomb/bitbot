@@ -1,0 +1,42 @@
+{
+	"name": "@bombitmanbomb/bitbot",
+	"version": "2.0.5",
+	"description": "Work in Progress",
+	"main": "lib/",
+	"types": "types/",
+	"scripts": {
+		"test": "node Tests/Test.js --unhandled-rejections=strict",
+		"lint": "prettier --use-tabs --write . && eslint -c .eslintrc.json --fix .",
+		"document": "typedoc ./src",
+		"ready": "npm run document && npm run lint"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bombitmanbomb/BitBot.git"
+	},
+	"keywords": [],
+	"author": "bombitmanbomb",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/bombitmanbomb/BitBot/issues"
+	},
+	"homepage": "https://github.com/bombitmanbomb/BitBot#readme",
+	"dependencies": {
+		"@bombitmanbomb/http-client": "2.2.0",
+		"@bombitmanbomb/utils": "2.9.2",
+		"@pm2/io": "^5.0.0",
+		"discord.js": "^13.1.0",
+		"dotenv": "^10.0.0",
+		"lodash": "^4.17.21",
+		"uuid": "^8.3.2"
+	},
+	"devDependencies": {
+		"@types/lodash": "^4.14.172",
+		"@types/node": "^16.4.13",
+		"@typescript-eslint/eslint-plugin": "^4.30.0",
+		"@typescript-eslint/parser": "^4.30.0",
+		"eslint": "^7.32.0",
+		"prettier": "^2.2.1",
+		"typescript": "4.3.4"
+	}
+}

@@ -1,0 +1,10 @@
+import type { TimeSpan } from "@bombitmanbomb/utils";
+export interface IBitBotConfig {
+	Tokens: {
+		Discord: string;
+	};
+	Debug?: {
+		id: string;
+		token: string;
+	};
+}
