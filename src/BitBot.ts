@@ -5,7 +5,7 @@ import { EventEmitter } from "events";
 import { DiscordManager } from "./DiscordManager";
 import Discord from "discord.js";
 import PMX from "@pm2/io/build/main/pmx";
-import { Dictionary, List } from "@bombitmanbomb/utils";
+import { Dictionary } from "@bombitmanbomb/utils";
 import { IModule } from "./IModule";
 export class BitBot {
 	public static Intents = Discord.Intents;

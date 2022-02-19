@@ -8,17 +8,17 @@ import { LogicModule } from "./LogicModule";
 import { Latency } from "./Latency";
 import { IModuleAction } from "./IModuleAction";
 import { Debug } from "./Debug";
-import { IModule } from './IModule';
+import { IModule } from "./IModule";
 let WHClient: WebhookClient;
 const serializer = (key: string, value: any) => {
 	switch (typeof value) {
-		case "bigint": {
-			return value.toString()
-		}
-		default:
-			return value
+	case "bigint": {
+		return value.toString();
 	}
-}
+	default:
+		return value;
+	}
+};
 export class LogicManager {
 	public uniqueId: typeof uniqueId;
 	public latency: Latency;
@@ -187,18 +187,20 @@ export class LogicManager {
 					const Embed = new this.Bot.Discord._discord.MessageEmbed()
 						.setTitle(event)
 						.setDescription(
-							`\`\`\`json\n${data != null
-								? JSON.stringify(data, serializer).substring(0, 1000)
-								: "No Content"
+							`\`\`\`json\n${
+								data != null
+									? JSON.stringify(data, serializer).substring(0, 1000)
+									: "No Content"
 							}\`\`\``
 						);
 
 					for (const a of responses) {
 						Embed.addField(
 							a.Key,
-							`\`\`\`json\n${a.Value != null
-								? JSON.stringify(a.Value, serializer).substring(0, 1000)
-								: "No Content"
+							`\`\`\`json\n${
+								a.Value != null
+									? JSON.stringify(a.Value, serializer).substring(0, 1000)
+									: "No Content"
 							}\`\`\``
 						);
 						console.log("EVENTS", event, data, a);
@@ -217,9 +219,9 @@ export class LogicManager {
 						r = Math.round(510 - 5.1 * percentage);
 					}
 					const color: [number, number, number] = [r, g, b];
-					Embed.setFooter(
-						"Execution: " + new Date(delay).getTime() + "ms • " + runId
-					);
+					Embed.setFooter({
+						text: "Execution: " + new Date(delay).getTime() + "ms • " + runId,
+					});
 					Embed.setColor(color);
 					EMBEDS.push(Embed);
 					if (WHClient) WHClient.send({ embeds: EMBEDS });

@@ -1,6 +1,6 @@
 {
 	"name": "@bombitmanbomb/bitbot",
-	"version": "2.0.5",
+	"version": "2.0.6",
 	"description": "Work in Progress",
 	"main": "lib/",
 	"types": "types/",
@@ -25,7 +25,7 @@
 		"@bombitmanbomb/http-client": "2.2.0",
 		"@bombitmanbomb/utils": "2.9.2",
 		"@pm2/io": "^5.0.0",
-		"discord.js": "^13.1.0",
+		"discord.js": "^13.6.0",
 		"dotenv": "^10.0.0",
 		"lodash": "^4.17.21",
 		"uuid": "^8.3.2"

@@ -1,4 +1,3 @@
-import type { TimeSpan } from "@bombitmanbomb/utils";
 export interface IBitBotConfig {
 	Tokens: {
 		Discord: string;
