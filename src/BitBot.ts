@@ -84,15 +84,23 @@ export class BitBot {
 		}
 		console.groupCollapsed("Loading Modules..");
 		for (const file of fs.readdirSync(absolute)) {
-			if (!file.startsWith(".") && file.endsWith(".js")) {
-				console.group("Loading File %s", file);
+			if (!file.startsWith(".")) {
 				try {
-					const tempMod: any = await import(path.join(folderPath, file));
-					const mod: IModule = (tempMod?.default ??
-						tempMod?.Module ??
-						tempMod) as IModule; //? Handle CJS, ESM, and CJS
-					console.group("Loading Module %s", mod.id);
-					this.AddLogicModule(mod);
+					let filePath = path.join(folderPath, file)
+					let stat = fs.lstatSync(filePath);
+					if (stat.isDirectory()) {
+						console.group("Reading folder %s", file);
+						this.LoadLogicFolder(filePath)
+					} else if (stat.isFile()) {
+						if (!file.endsWith(".js")) continue;
+						console.group("Loading File %s", file);
+						const tempMod: any = await import(path.join(folderPath, file));
+						const mod: IModule = (tempMod?.default ??
+							tempMod?.Module ??
+							tempMod) as IModule; //? Handle CJS, ESM, and CJS
+						console.group("Loading Module %s", mod.id);
+						this.AddLogicModule(mod);
+					}
 					console.groupEnd();
 				} catch (error) {
 					console.error(`Failed to load ${file} from ${folderPath}`, error);

@@ -1,6 +1,6 @@
 {
 	"name": "@bombitmanbomb/bitbot",
-	"version": "2.0.7",
+	"version": "2.0.8",
 	"description": "Work in Progress",
 	"main": "lib/",
 	"types": "types/",
