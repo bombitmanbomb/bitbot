@@ -1,4 +1,4 @@
-import {BBError} from "./BBError";
+import { BBError } from "./BBError";
 
 export const Messages = {
   MANAGER_DESTROYED: 'Manager was destroyed.',
@@ -14,8 +14,15 @@ export const Messages = {
 
   NOT_IMPLEMENTED: (what: string, name: string) => `Method ${what} not implemented on ${name}.`,
 
-  MODULE_MISSING_SCRIPT: (module_id: string) => `Missinc Script in Module: ${module_id}`,
-  MODULE_TYPE_INVALID: (module_type: string, module_id: string)=>`Failed to load module \`${module_id}\`. Unsupported Type: ${module_type}`
+  MODULE_MISSING_SCRIPT: (module_id: string) => `Missing Script in Module: ${module_id}`,
+  MODULE_LOAD: (module: string) => `Error Loading Module-File: ${module}`,
+  MODULE_TYPE_INVALID: (module_type: string, module_id: string) => `Failed to load module \`${module_id}\`. Unsupported Type: ${module_type}`,
+  MODULE_SYNTAX_INVALID: (module_id: string) => `Invalid Syntax in Module: ${module_id}`,
+
+  FILE_NOT_FOUND: (file: string) => `File could not be found: ${file}`,
+  DIRECTORY_NOT_FOUND: (directory: string) => `Directory could not be found: ${directory}`,
+
+  DEV_ERROR: (error: string) => error
 }
 
 for (const [name, message] of Object.entries(Messages)) BBError.register(name, message);

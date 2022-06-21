@@ -7,6 +7,7 @@ import PMX from "@pm2/io/build/main/pmx";
 import { Dictionary } from "@bombitmanbomb/utils";
 import { IModule } from "./Module";
 import { BitBotCommand, IBitBotCommand } from './Interaction';
+import { BBError } from '../Error/BBError';
 export class BitBot {
 	public static Intents = Discord.Intents;
 	public Config: IBitBotConfig;
@@ -87,8 +88,8 @@ export class BitBot {
 		console.groupCollapsed("Loading Modules..");
 		for (const file of fs.readdirSync(absolute)) {
 			if (!file.startsWith(".")) {
+				let filePath = path.join(folderPath, file)
 				try {
-					let filePath = path.join(folderPath, file)
 					let stat = fs.lstatSync(filePath);
 					if (stat.isDirectory()) {
 						console.group("Reading folder %s", file);
@@ -105,7 +106,7 @@ export class BitBot {
 					}
 					console.groupEnd();
 				} catch (error) {
-					console.error(`Failed to load ${file} from ${folderPath}`, error);
+					console.error(new BBError.Error("MODULE_LOAD", filePath));
 				}
 				console.groupEnd();
 			}
@@ -128,8 +129,8 @@ export class BitBot {
 		console.groupCollapsed("Loading Interactions..");
 		for (const file of fs.readdirSync(absolute)) {
 			if (!file.startsWith(".")) {
+				let filePath = path.join(folderPath, file)
 				try {
-					let filePath = path.join(folderPath, file)
 					let stat = fs.lstatSync(filePath);
 					if (stat.isDirectory()) {
 						console.group("Reading folder %s", file);
@@ -146,7 +147,7 @@ export class BitBot {
 					}
 					console.groupEnd();
 				} catch (error) {
-					console.error(`Failed to load ${file} from ${folderPath}`, error);
+					console.error(new BBError.Error("MODULE_LOAD", filePath));
 				}
 				console.groupEnd();
 			}

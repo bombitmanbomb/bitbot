@@ -7,7 +7,8 @@ const messages = new Map;
 function makeError(Base: any) {
   return class BitBotError extends Base {
     constructor(key: string, ...args: any[]) {
-      super(message(key, args));
+      let m = message(key, args)
+      super(m);
       this[kCode as unknown as string] = key;
       if (Error.captureStackTrace) Error.captureStackTrace(this, BitBotError);
     }
@@ -19,6 +20,10 @@ function makeError(Base: any) {
     get code() {
       return this[kCode as unknown as string];
     }
+
+    get message() {
+      return super.message ?? "No Message"
+    }
   }
 }
 
@@ -27,7 +32,7 @@ function makeError(Base: any) {
  */
 function message(key: string, args: any[]): string {
   if (typeof key !== 'string') throw new Error('Error message key must be a string');
-  const msg = messages.get('key');
+  const msg = messages.get(key);
   if (!msg) throw new Error(`An invalid error message key was used: ${key}.`);
   if (typeof msg === 'function') return msg(...args);
   if (!args?.length) return msg
@@ -44,6 +49,7 @@ function register(sym: string, val: any): void {
 
 export const BBError = {
   register,
+  messages,
   Error: makeError(Error),
   TypeError: makeError(TypeError),
   RangeError: makeError(RangeError)

@@ -6,6 +6,7 @@ import type Counter from "@pm2/io/build/main/utils/metrics/counter";
 import type Gauge from "@pm2/io/build/main/utils/metrics/gauge";
 import { LogicModule, IModuleAction, IModule } from "../Module";
 import { Latency, Debug } from "../../Util";
+import { BBError } from "../../Error";
 let WHClient: WebhookClient;
 const serializer = (key: string, value: any) => {
 	switch (typeof value) {
@@ -114,7 +115,7 @@ export class LogicManager {
 					}
 				);
 			} else {
-				this.Bot.Error(`Bad Action in Module ${Logic.id}. Missinc Script!`, {
+				this.Bot.Error(new BBError.Error("MODULE_MISSING_SCRIPT", Logic.id), {
 					action,
 					Module: Logic.id,
 				});
