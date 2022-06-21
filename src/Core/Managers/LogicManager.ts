@@ -5,9 +5,9 @@ import { Dictionary, List, Out } from "@bombitmanbomb/utils";
 import type Counter from "@pm2/io/build/main/utils/metrics/counter";
 import type Gauge from "@pm2/io/build/main/utils/metrics/gauge";
 import { LogicModule } from "../Module/LogicModule";
-import { Latency } from "../Util/Latency";
+import { Latency } from "../../Util/Latency";
 import { IModuleAction } from "../Module/IModuleAction";
-import { Debug } from "../Util/Debug";
+import { Debug } from "../../Util/Debug";
 import { IModule } from "../Module/IModule";
 import {BBError} from "../../Error"
 let WHClient: WebhookClient;

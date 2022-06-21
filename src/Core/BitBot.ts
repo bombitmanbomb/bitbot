@@ -1,4 +1,4 @@
-import { IBitBotConfig } from "./Util/IBitBotConfig";
+import { IBitBotConfig } from "../Util/IBitBotConfig";
 import { LogicManager } from "./Managers/LogicManager";
 import Pm2 from "@pm2/io";
 import { EventEmitter } from "events";
