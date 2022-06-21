@@ -1,5 +1,5 @@
 import { List } from "@bombitmanbomb/utils/lib";
-import type { LogicManager } from "./LogicManager";
+import type { LogicManager } from "../Managers/LogicManager";
 import { IModuleScript } from "./IModuleScript";
 import { IModuleLoadScript } from "./IModuleLoadScript";
 import { IModule } from "./IModule";

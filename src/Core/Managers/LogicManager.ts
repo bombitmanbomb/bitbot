@@ -1,14 +1,15 @@
-import type { BitBot } from "./BitBot";
+import type { BitBot } from "../BitBot";
 import { uniqueId } from "lodash";
 import { WebhookClient } from "discord.js";
 import { Dictionary, List, Out } from "@bombitmanbomb/utils";
 import type Counter from "@pm2/io/build/main/utils/metrics/counter";
 import type Gauge from "@pm2/io/build/main/utils/metrics/gauge";
-import { LogicModule } from "./LogicModule";
-import { Latency } from "./Latency";
-import { IModuleAction } from "./IModuleAction";
-import { Debug } from "./Debug";
-import { IModule } from "./IModule";
+import { LogicModule } from "../Module/LogicModule";
+import { Latency } from "../Util/Latency";
+import { IModuleAction } from "../Module/IModuleAction";
+import { Debug } from "../Util/Debug";
+import { IModule } from "../Module/IModule";
+import {BBError} from "../../Error"
 let WHClient: WebhookClient;
 const serializer = (key: string, value: any) => {
 	switch (typeof value) {

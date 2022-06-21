@@ -1,12 +1,14 @@
-import { IBitBotConfig } from "./IBitBotConfig";
-import { LogicManager } from "./LogicManager";
+import { IBitBotConfig } from "./Util/IBitBotConfig";
+import { LogicManager } from "./Managers/LogicManager";
 import Pm2 from "@pm2/io";
 import { EventEmitter } from "events";
-import { DiscordManager } from "./DiscordManager";
+import { DiscordManager } from "./Managers/DiscordManager";
 import Discord from "discord.js";
 import PMX from "@pm2/io/build/main/pmx";
 import { Dictionary } from "@bombitmanbomb/utils";
-import { IModule } from "./IModule";
+import { IModule } from "./Module/IModule";
+import { BitBotCommand, IBitBotCommand } from './Interaction/BitBotCommand';
+import { InteractionManager } from "./Managers/InteractionManager"
 export class BitBot {
 	public static Intents = Discord.Intents;
 	public Config: IBitBotConfig;
@@ -14,6 +16,7 @@ export class BitBot {
 	public Events: EventEmitter;
 	public Initialized: boolean;
 	public Logic: LogicManager;
+	public Interactions: InteractionManager
 	public Discord!: DiscordManager;
 	constructor(
 		$config: IBitBotConfig,
@@ -25,6 +28,7 @@ export class BitBot {
 		this.Initialized = false;
 		this.Events = new EventEmitter();
 		this.Logic = new LogicManager(this);
+		this.Interactions = new InteractionManager(this);
 		this.Setup({ DiscordIntents });
 	}
 	private async Setup(Options: any): Promise<void> {
@@ -92,7 +96,7 @@ export class BitBot {
 						console.group("Reading folder %s", file);
 						this.LoadLogicFolder(filePath)
 					} else if (stat.isFile()) {
-						if (!file.endsWith(".js")) continue;
+						if (!(file.endsWith(".js") || file.endsWith(".mjs"))) continue;
 						console.group("Loading File %s", file);
 						const tempMod: any = await import(path.join(folderPath, file));
 						const mod: IModule = (tempMod?.default ??
@@ -109,6 +113,48 @@ export class BitBot {
 			}
 		}
 	}
+
+	public AddInteractionModule(mod: BitBotCommand | IBitBotCommand) {
+		return this.Interactions.registerModule(mod instanceof BitBotCommand ? mod : new BitBotCommand(mod));
+	}
+
+	public async LoadInteractionFolder(folderPath: string): Promise<void> {
+		const fs = await import("fs");
+		const path = await import("path");
+		let absolute: string;
+		if (path.isAbsolute(folderPath)) {
+			absolute = folderPath;
+		} else {
+			absolute = path.join(__dirname, folderPath);
+		}
+		console.groupCollapsed("Loading Interactions..");
+		for (const file of fs.readdirSync(absolute)) {
+			if (!file.startsWith(".")) {
+				try {
+					let filePath = path.join(folderPath, file)
+					let stat = fs.lstatSync(filePath);
+					if (stat.isDirectory()) {
+						console.group("Reading folder %s", file);
+						this.LoadInteractionFolder(filePath)
+					} else if (stat.isFile()) {
+						if (!(file.endsWith(".js") || file.endsWith(".mjs"))) continue;
+						console.group("Loading File %s", file);
+						const tempMod: any = await import(path.join(folderPath, file));
+						const mod: IBitBotCommand = (tempMod?.default ??
+							tempMod?.Module ??
+							tempMod) as IBitBotCommand; //? Handle CJS, ESM, and CJS
+						console.group("Loading Interaction %s", mod.command.name);
+						this.AddInteractionModule(mod);
+					}
+					console.groupEnd();
+				} catch (error) {
+					console.error(`Failed to load ${file} from ${folderPath}`, error);
+				}
+				console.groupEnd();
+			}
+		}
+	}
+
 	public async RunEvents(
 		event: string,
 		data: unknown,

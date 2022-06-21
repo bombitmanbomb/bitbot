@@ -1,4 +1,4 @@
-import type { BitBot } from "./BitBot";
+import type { BitBot } from "../BitBot";
 import Discord, { Client } from "discord.js";
 export class DiscordManager {
 	public Bot: BitBot;
