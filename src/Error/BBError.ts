@@ -14,7 +14,7 @@ function makeError(Base: any) {
     }
 
     get name() {
-      return `${super.name} [${this[kCode as unknown as string]}]`;
+      return `[${this[kCode as unknown as string]}]`;
     }
 
     get code() {
