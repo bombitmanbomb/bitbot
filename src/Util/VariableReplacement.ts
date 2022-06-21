@@ -1,6 +1,5 @@
 import _ from "lodash";
 
-
 /**
  * Utility Class for string variable replacement.
  */
