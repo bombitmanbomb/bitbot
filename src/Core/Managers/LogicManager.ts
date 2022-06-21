@@ -4,20 +4,16 @@ import { WebhookClient } from "discord.js";
 import { Dictionary, List, Out } from "@bombitmanbomb/utils";
 import type Counter from "@pm2/io/build/main/utils/metrics/counter";
 import type Gauge from "@pm2/io/build/main/utils/metrics/gauge";
-import { LogicModule } from "../Module/LogicModule";
-import { Latency } from "../../Util/Latency";
-import { IModuleAction } from "../Module/IModuleAction";
-import { Debug } from "../../Util/Debug";
-import { IModule } from "../Module/IModule";
-import {BBError} from "../../Error"
+import { LogicModule, IModuleAction, IModule } from "../Module";
+import { Latency, Debug } from "../../Util";
 let WHClient: WebhookClient;
 const serializer = (key: string, value: any) => {
 	switch (typeof value) {
-	case "bigint": {
-		return value.toString();
-	}
-	default:
-		return value;
+		case "bigint": {
+			return value.toString();
+		}
+		default:
+			return value;
 	}
 };
 export class LogicManager {
@@ -188,20 +184,18 @@ export class LogicManager {
 					const Embed = new this.Bot.Discord._discord.MessageEmbed()
 						.setTitle(event)
 						.setDescription(
-							`\`\`\`json\n${
-								data != null
-									? JSON.stringify(data, serializer).substring(0, 1000)
-									: "No Content"
+							`\`\`\`json\n${data != null
+								? JSON.stringify(data, serializer).substring(0, 1000)
+								: "No Content"
 							}\`\`\``
 						);
 
 					for (const a of responses) {
 						Embed.addField(
 							a.Key,
-							`\`\`\`json\n${
-								a.Value != null
-									? JSON.stringify(a.Value, serializer).substring(0, 1000)
-									: "No Content"
+							`\`\`\`json\n${a.Value != null
+								? JSON.stringify(a.Value, serializer).substring(0, 1000)
+								: "No Content"
 							}\`\`\``
 						);
 						console.log("EVENTS", event, data, a);

@@ -1,14 +1,12 @@
-import { IBitBotConfig } from "../Util/IBitBotConfig";
-import { LogicManager } from "./Managers/LogicManager";
+import { IBitBotConfig } from "../Util";
 import Pm2 from "@pm2/io";
 import { EventEmitter } from "events";
-import { DiscordManager } from "./Managers/DiscordManager";
+import { DiscordManager, InteractionManager, LogicManager } from "./Managers";
 import Discord from "discord.js";
 import PMX from "@pm2/io/build/main/pmx";
 import { Dictionary } from "@bombitmanbomb/utils";
-import { IModule } from "./Module/IModule";
-import { BitBotCommand, IBitBotCommand } from './Interaction/BitBotCommand';
-import { InteractionManager } from "./Managers/InteractionManager"
+import { IModule } from "./Module";
+import { BitBotCommand, IBitBotCommand } from './Interaction';
 export class BitBot {
 	public static Intents = Discord.Intents;
 	public Config: IBitBotConfig;

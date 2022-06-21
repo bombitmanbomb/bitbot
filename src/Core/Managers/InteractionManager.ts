@@ -1,7 +1,6 @@
-import { Dictionary, List, Out, StringBuilder } from "@bombitmanbomb/utils/lib";
+import { Dictionary, List, Out, StringBuilder } from "@bombitmanbomb/utils";
 import { Interaction, CommandInteraction, MessageComponentInteraction, PermissionString, Permissions, TextChannel } from 'discord.js';
-import { BitBotCommand } from '../Interaction/BitBotCommand';
-import { ReplyHelper } from '../Interaction/ReplyHelper';
+import { BitBotCommand, ReplyHelper } from '../Interaction';
 import { BBError } from "../../Error";
 import type { BitBot } from '../BitBot';
 

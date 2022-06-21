@@ -1,4 +1,4 @@
-import { LogicManager } from "../Managers/LogicManager";
+import { LogicManager } from "../Managers";
 /** Runs on Module Load */
 export interface IModuleLoadScript {
 	(Manager: LogicManager): unknown;

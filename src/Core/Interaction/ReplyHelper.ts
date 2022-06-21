@@ -1,11 +1,11 @@
 import { Interaction, MessagePayload, WebhookEditMessageOptions, InteractionReplyOptions } from 'discord.js';
-import { LogicManager } from '../Managers/LogicManager';
+import { LogicManager } from '../Managers';
 export class ReplyHelper {
   interaction: Interaction
   ephemeral: boolean = true
-  manager:LogicManager
-  acknowledged:boolean = false
-  constructor(interaction: Interaction, ephemeral = true, manager:LogicManager) {
+  manager: LogicManager
+  acknowledged: boolean = false
+  constructor(interaction: Interaction, ephemeral = true, manager: LogicManager) {
     this.interaction = interaction
     this.ephemeral = ephemeral
     this.manager = manager

@@ -1,4 +1,4 @@
-import { LogicManager } from "../Managers/LogicManager";
+import { LogicManager } from "../Managers";
 /**
  * Module PM2 Action
  */
