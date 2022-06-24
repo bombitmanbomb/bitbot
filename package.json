@@ -1,6 +1,6 @@
 {
 	"name": "@bombitmanbomb/bitbot",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"description": "Work in Progress",
 	"main": "lib/",
 	"types": "types/",
@@ -32,8 +32,8 @@
 	},
 	"devDependencies": {
 		"@types/lodash": "^4.14.172",
-		"@types/node": "^16.4.13",
-		"@typescript-eslint/eslint-plugin": "^4.33.0",
+		"@types/node": "^18.0.0",
+		"@typescript-eslint/eslint-plugin": "^5.29.0",
 		"@typescript-eslint/parser": "^4.33.0",
 		"eslint": "^8.18.0",
 		"prettier": "^2.2.1",
