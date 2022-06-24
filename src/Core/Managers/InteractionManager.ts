@@ -2,7 +2,6 @@ import { Dictionary, List, Out, StringBuilder } from "@bombitmanbomb/utils";
 import {
 	Interaction,
 	CommandInteraction,
-	MessageComponentInteraction,
 	PermissionString,
 	Permissions,
 	TextChannel,
@@ -19,16 +18,16 @@ export class InteractionManager {
 	}
 	public interact(interactionData: Interaction) {
 		if (interactionData.isCommand()) {
-			let interaction = interactionData;
+			const interaction = interactionData;
 			interaction.deferReply({ ephemeral: true }).then(() => {
-				let helper = new ReplyHelper(interaction, true, this.Bot.Logic);
+				const helper = new ReplyHelper(interaction, true, this.Bot.Logic);
 				helper.acknowledged = true;
-				let cmd = new Out<BitBotCommand>();
+				const cmd = new Out<BitBotCommand>();
 
 				//? Get the command
 
 				if (this.command.TryGetValue(interaction.commandName, cmd)) {
-					let cache: Record<any, any> = {};
+					const cache: Record<any, any> = {};
 					let command = cmd.Out;
 					command
 						.runPermissionValidation(interaction, cache)
@@ -37,15 +36,15 @@ export class InteractionManager {
 							if (!(validation.channels.length === 0)) {
 								let permissionChannels: IPermissionValidator[] = [];
 								for (let channelObject of validation.channels) {
-									let token = channelObject.channel_token;
-									let perms = new Out<List<PermissionString>>();
-									let permissionObject: IPermissionValidator = {
+									const token = channelObject.channel_token;
+									const perms = new Out<List<PermissionString>>();
+									const permissionObject: IPermissionValidator = {
 										channel_id: channelObject.channel_id,
 										permissions: [],
 									};
-									let cachePerms = (await (
+									const cachePerms = (await (
 										this.Bot.Discord.Client.guilds.cache
-											.get(interaction.guildId!)
+											.get(interaction.guildId as string)
 											?.channels.cache.get(
 												channelObject.channel_id
 											) as TextChannel
@@ -63,7 +62,7 @@ export class InteractionManager {
 									}
 
 									if (command.permissions.TryGetValue(token, perms)) {
-										for (let perm of perms.Out) {
+										for (const perm of perms.Out) {
 											permissionObject.permissions.push({
 												perm,
 												meets: cachePerms.has(perm),
@@ -84,9 +83,9 @@ export class InteractionManager {
 								});
 
 								if (failed.length > 0) {
-									let description = new StringBuilder();
+									const description = new StringBuilder();
 									for (let perms of failed) {
-										let section = new StringBuilder();
+										const section = new StringBuilder();
 										section.Append(`<#${perms.channel_id}>\r\n`);
 										for (let perm of perms.permissions) {
 											//TODO Map to Human-Readable Permissions
@@ -127,7 +126,7 @@ export class InteractionManager {
 	 */
 	private quickRespond(
 		interactionData: Interaction,
-		title: string = "Something went Wrong",
+		title = "Something went Wrong",
 		description?: string
 	) {
 		let interaction = interactionData as CommandInteraction;
