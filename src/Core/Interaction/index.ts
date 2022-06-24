@@ -1,2 +1,2 @@
-export { ReplyHelper } from './ReplyHelper';
-export * from './BitBotCommand';
+export { ReplyHelper } from "./ReplyHelper";
+export * from "./BitBotCommand";

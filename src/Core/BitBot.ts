@@ -6,8 +6,8 @@ import Discord from "discord.js";
 import PMX from "@pm2/io/build/main/pmx";
 import { Dictionary } from "@bombitmanbomb/utils";
 import { IModule } from "./Module";
-import { BitBotCommand, IBitBotCommand } from './Interaction';
-import { BBError } from '../Error/BBError';
+import { BitBotCommand, IBitBotCommand } from "./Interaction";
+import { BBError } from "../Error/BBError";
 export class BitBot {
 	public static Intents = Discord.Intents;
 	public Config: IBitBotConfig;
@@ -15,7 +15,7 @@ export class BitBot {
 	public Events: EventEmitter;
 	public Initialized: boolean;
 	public Logic: LogicManager;
-	public Interactions: InteractionManager
+	public Interactions: InteractionManager;
 	public Discord!: DiscordManager;
 	constructor(
 		$config: IBitBotConfig,
@@ -88,12 +88,12 @@ export class BitBot {
 		console.groupCollapsed("Loading Modules..");
 		for (const file of fs.readdirSync(absolute)) {
 			if (!file.startsWith(".")) {
-				let filePath = path.join(folderPath, file)
+				let filePath = path.join(folderPath, file);
 				try {
 					let stat = fs.lstatSync(filePath);
 					if (stat.isDirectory()) {
 						console.group("Reading folder %s", file);
-						this.LoadLogicFolder(filePath)
+						this.LoadLogicFolder(filePath);
 					} else if (stat.isFile()) {
 						if (!(file.endsWith(".js") || file.endsWith(".mjs"))) continue;
 						console.group("Loading File %s", file);
@@ -114,7 +114,9 @@ export class BitBot {
 	}
 
 	public AddInteractionModule(mod: BitBotCommand | IBitBotCommand) {
-		return this.Interactions.registerModule(mod instanceof BitBotCommand ? mod : new BitBotCommand(mod));
+		return this.Interactions.registerModule(
+			mod instanceof BitBotCommand ? mod : new BitBotCommand(mod)
+		);
 	}
 
 	public async LoadInteractionFolder(folderPath: string): Promise<void> {
@@ -129,12 +131,12 @@ export class BitBot {
 		console.groupCollapsed("Loading Interactions..");
 		for (const file of fs.readdirSync(absolute)) {
 			if (!file.startsWith(".")) {
-				let filePath = path.join(folderPath, file)
+				let filePath = path.join(folderPath, file);
 				try {
 					let stat = fs.lstatSync(filePath);
 					if (stat.isDirectory()) {
 						console.group("Reading folder %s", file);
-						this.LoadInteractionFolder(filePath)
+						this.LoadInteractionFolder(filePath);
 					} else if (stat.isFile()) {
 						if (!(file.endsWith(".js") || file.endsWith(".mjs"))) continue;
 						console.group("Loading File %s", file);

@@ -7,8 +7,8 @@
 	},
 	"extends": [
 		"eslint:recommended",
-		"plugin:@typescript-eslint/eslint-recommended",
-		"plugin:@typescript-eslint/recommended"
+		"plugin:@typescript-eslint/recommended",
+		"prettier"
 	],
 	"globals": {
 		"Atomics": "readonly",
@@ -19,7 +19,6 @@
 	},
 	"rules": {
 		"indent": ["error", "tab"],
-		"linebreak-style": ["error", "windows"],
 		"quotes": ["error", "double"],
 		"semi": ["error", "always"]
 	},

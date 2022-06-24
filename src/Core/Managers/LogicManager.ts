@@ -150,8 +150,8 @@ export class LogicManager {
 					moduleList && typeof moduleList == "string"
 						? !(eventModule == moduleList)
 						: Array.isArray(moduleList)
-							? !moduleList.includes(eventModule)
-							: false
+						? !moduleList.includes(eventModule)
+						: false
 				)
 					continue;
 
@@ -185,18 +185,20 @@ export class LogicManager {
 					const Embed = new this.Bot.Discord._discord.MessageEmbed()
 						.setTitle(event)
 						.setDescription(
-							`\`\`\`json\n${data != null
-								? JSON.stringify(data, serializer).substring(0, 1000)
-								: "No Content"
+							`\`\`\`json\n${
+								data != null
+									? JSON.stringify(data, serializer).substring(0, 1000)
+									: "No Content"
 							}\`\`\``
 						);
 
 					for (const a of responses) {
 						Embed.addField(
 							a.Key,
-							`\`\`\`json\n${a.Value != null
-								? JSON.stringify(a.Value, serializer).substring(0, 1000)
-								: "No Content"
+							`\`\`\`json\n${
+								a.Value != null
+									? JSON.stringify(a.Value, serializer).substring(0, 1000)
+									: "No Content"
 							}\`\`\``
 						);
 						console.log("EVENTS", event, data, a);

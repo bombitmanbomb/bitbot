@@ -6,7 +6,7 @@
 	"types": "types/",
 	"scripts": {
 		"test": "node Tests/Test.js --unhandled-rejections=strict",
-		"lint": "prettier --use-tabs --write . && eslint -c .eslintrc.json --fix .",
+		"lint": "prettier --use-tabs --write . && eslint --fix .",
 		"document": "typedoc ./src",
 		"ready": "npm run document && npm run lint"
 	},
@@ -33,10 +33,10 @@
 	"devDependencies": {
 		"@types/lodash": "^4.14.172",
 		"@types/node": "^16.4.13",
-		"@typescript-eslint/eslint-plugin": "^4.30.0",
-		"@typescript-eslint/parser": "^4.30.0",
+		"@typescript-eslint/eslint-plugin": "^4.33.0",
+		"@typescript-eslint/parser": "^4.33.0",
 		"eslint": "^8.18.0",
 		"prettier": "^2.2.1",
-		"typescript": "4.7.4"
+		"typescript": "^4.7.4"
 	}
 }

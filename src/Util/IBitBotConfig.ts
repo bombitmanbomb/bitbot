@@ -6,5 +6,5 @@ export interface IBitBotConfig {
 		id: string;
 		token: string;
 	};
-	Name?: string
+	Name?: string;
 }
