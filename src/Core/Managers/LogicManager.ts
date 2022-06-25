@@ -1,6 +1,6 @@
 import type { BitBot } from "../BitBot";
 import { uniqueId } from "lodash";
-import { WebhookClient } from "discord.js";
+import { MessageEmbed, WebhookClient } from "discord.js";
 import { Dictionary, List, Out } from "@bombitmanbomb/utils";
 import type Counter from "@pm2/io/build/main/utils/metrics/counter";
 import type Gauge from "@pm2/io/build/main/utils/metrics/gauge";
@@ -181,7 +181,7 @@ export class LogicManager {
 					(this.DebugWhitelist.length == 0 &&
 						!this.DebugBlackList.includes(event))
 				) {
-					const EMBEDS = [];
+					const EMBEDS:MessageEmbed[] = [];
 					const Embed = new this.Bot.Discord._discord.MessageEmbed()
 						.setTitle(event)
 						.setDescription(
