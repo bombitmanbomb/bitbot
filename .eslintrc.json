@@ -20,7 +20,8 @@
 	"rules": {
 		"indent": ["error", "tab"],
 		"quotes": ["error", "double"],
-		"semi": ["error", "always"]
+		"semi": ["error", "always"],
+		"no-explicit-any": false
 	},
 	"parser": "@typescript-eslint/parser",
 	"ignorePatterns": ["/lib/*"]
