@@ -90,8 +90,7 @@ export class InteractionManager {
 										for (let perm of perms.permissions) {
 											//TODO Map to Human-Readable Permissions
 											section.Append(
-												`**__${perm.perm}__**: ${
-													perm.meets ? ":white_check_mark:" : ":x:"
+												`**__${perm.perm}__**: ${perm.meets ? ":white_check_mark:" : ":x:"
 												}\r\n`
 											);
 										}
@@ -169,7 +168,7 @@ export class InteractionManager {
 	 * Sync Commands with Discord API
 	 */
 	public async cloudUpdate() {
-		let commands = [];
+		let commands:any[] = [];
 		for (let obj of this.command) commands.push(obj.Value.command);
 		return this.Bot.Discord.Client.application?.commands.set(commands); //! Can be Improved
 	}
