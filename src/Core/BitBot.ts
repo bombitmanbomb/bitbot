@@ -8,6 +8,8 @@ import { Dictionary } from "@bombitmanbomb/utils";
 import { IModule } from "./Module";
 import { BitBotCommand, IBitBotCommand } from "./Interaction";
 import { BBError } from "../Error/BBError";
+import fs from "fs";
+import path from "path"
 export class BitBot {
 	public static Intents = Discord.Intents;
 	public Config: IBitBotConfig;
@@ -76,42 +78,6 @@ export class BitBot {
 	public AddLogicModule(mod: IModule): void {
 		this.Logic.AddModule(this.Logic.CreateBoundLogicModule(mod));
 	}
-	public async LoadLogicFolder(folderPath: string): Promise<void> {
-		const fs = await import("fs");
-		const path = await import("path");
-		let absolute: string;
-		if (path.isAbsolute(folderPath)) {
-			absolute = folderPath;
-		} else {
-			absolute = path.join(__dirname, folderPath);
-		}
-		console.groupCollapsed("Loading Modules..");
-		for (const file of fs.readdirSync(absolute)) {
-			if (!file.startsWith(".")) {
-				let filePath = path.join(folderPath, file);
-				try {
-					let stat = fs.lstatSync(filePath);
-					if (stat.isDirectory()) {
-						console.group("Reading folder %s", file);
-						this.LoadLogicFolder(filePath);
-					} else if (stat.isFile()) {
-						if (!(file.endsWith(".js") || file.endsWith(".mjs"))) continue;
-						console.group("Loading File %s", file);
-						const tempMod: any = await import(path.join(folderPath, file));
-						const mod: IModule = (tempMod?.default ??
-							tempMod?.Module ??
-							tempMod) as IModule; //? Handle CJS, ESM, and CJS
-						console.group("Loading Module %s", mod.id);
-						this.AddLogicModule(mod);
-					}
-					console.groupEnd();
-				} catch (error) {
-					console.error(new BBError.Error("MODULE_LOAD", filePath));
-				}
-				console.groupEnd();
-			}
-		}
-	}
 
 	public AddInteractionModule(mod: BitBotCommand | IBitBotCommand) {
 		return this.Interactions.registerModule(
@@ -119,41 +85,47 @@ export class BitBot {
 		);
 	}
 
-	public async LoadInteractionFolder(folderPath: string): Promise<void> {
-		const fs = await import("fs");
-		const path = await import("path");
+	public async LoadLogicFolder(folderPath: string): Promise<IModule[]> {
+		return this.loadFolder<IModule>(folderPath, this.AddLogicModule);
+	}
+
+	public async LoadInteractionFolder(folderPath: string): Promise<IBitBotCommand[]> {
+		return this.loadFolder<IBitBotCommand>(folderPath, this.AddInteractionModule);
+	}
+
+	/**
+	 * Recursively load the files of a folder.
+	 */
+	public async loadFolder<T>(folderPath: string, cb?: (module: T) => any, modules: Promise<T>[] = []) {
 		let absolute: string;
 		if (path.isAbsolute(folderPath)) {
 			absolute = folderPath;
 		} else {
 			absolute = path.join(__dirname, folderPath);
 		}
-		console.groupCollapsed("Loading Interactions..");
 		for (const file of fs.readdirSync(absolute)) {
 			if (!file.startsWith(".")) {
 				let filePath = path.join(folderPath, file);
 				try {
 					let stat = fs.lstatSync(filePath);
 					if (stat.isDirectory()) {
-						console.group("Reading folder %s", file);
-						this.LoadInteractionFolder(filePath);
+						this.loadFolder<T>(filePath, cb, modules);
 					} else if (stat.isFile()) {
-						if (!(file.endsWith(".js") || file.endsWith(".mjs"))) continue;
-						console.group("Loading File %s", file);
-						const tempMod: any = await import(path.join(folderPath, file));
-						const mod: IBitBotCommand = (tempMod?.default ??
-							tempMod?.Module ??
-							tempMod) as IBitBotCommand; //? Handle CJS, ESM, and CJS
-						console.group("Loading Interaction %s", mod.command.name);
-						this.AddInteractionModule(mod);
+						if (!(file.endsWith(".js") || file.endsWith(".mjs") || file.endsWith(".ts") || file.endsWith(".tjs"))) continue;
+						const tempMod: any = import(path.join(folderPath, file));
+						modules.push(tempMod?.default ?? tempMod?.Module ?? tempMod); //? Handle CJS, ESM, and CJS
 					}
-					console.groupEnd();
 				} catch (error) {
-					console.error(new BBError.Error("MODULE_LOAD", filePath));
+					throw new BBError.Error("MODULE_LOAD", filePath);
 				}
-				console.groupEnd();
 			}
 		}
+		const asyncModules = await Promise.all(modules);
+		if (cb != null) {
+			for (let mod of asyncModules)
+				cb?.call?.(this, mod);
+		}
+		return asyncModules
 	}
 
 	public async RunEvents(
