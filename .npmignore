@@ -6,7 +6,6 @@ Tests
 Examples
 workflows
 ISSUE_TEMPLATE
-docs
 .env
 .eslintignore
 .gitconfig
@@ -18,3 +17,5 @@ inch.json
 .prettierignore
 .jsdoc.json
 src/
+test/
+docs/
