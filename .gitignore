@@ -7,8 +7,7 @@ AFOBot/
 pnpm-lock.yaml
 Examples/db.json
 Examples/Config.json
-
-lib/
-types/
-docs/
+lib
+types
+docs
 package-lock.json
