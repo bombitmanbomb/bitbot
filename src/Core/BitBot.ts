@@ -1,27 +1,25 @@
 import { IBitBotConfig } from "../Util";
 import Pm2 from "@pm2/io";
 import { EventEmitter } from "events";
-import { DiscordManager, InteractionManager, LogicManager } from "./Managers";
-import Discord from "discord.js";
+import { DiscordManager, LogicManager } from "./Managers";
+import Discord, { GatewayIntentBits } from "discord.js";
 import PMX from "@pm2/io/build/main/pmx";
 import { Dictionary } from "@bombitmanbomb/utils";
 import { IModule } from "./Module";
-import { BitBotCommand, IBitBotCommand } from "./Interaction";
 import { BBError } from "../Error/BBError";
 import fs from "fs";
 import path from "path"
 export class BitBot {
-	public static Intents = Discord.Intents;
+	public static Intents = GatewayIntentBits;
 	public Config: IBitBotConfig;
 	public Pm2?: typeof Pm2;
 	public Events: EventEmitter;
 	public Initialized: boolean;
 	public Logic: LogicManager;
-	public Interactions: InteractionManager;
 	public Discord!: DiscordManager;
 	constructor(
 		$config: IBitBotConfig,
-		DiscordIntents?: Discord.Intents,
+		DiscordIntents?: Discord.GatewayIntentBits[],
 		io?: PMX
 	) {
 		this.Config = $config;
@@ -29,7 +27,6 @@ export class BitBot {
 		this.Initialized = false;
 		this.Events = new EventEmitter();
 		this.Logic = new LogicManager(this);
-		this.Interactions = new InteractionManager(this);
 		this.Setup({ DiscordIntents });
 	}
 	private async Setup(Options: any): Promise<void> {
@@ -79,18 +76,9 @@ export class BitBot {
 		this.Logic.AddModule(this.Logic.CreateBoundLogicModule(mod));
 	}
 
-	public AddInteractionModule(mod: BitBotCommand | IBitBotCommand) {
-		return this.Interactions.registerModule(
-			mod instanceof BitBotCommand ? mod : new BitBotCommand(mod)
-		);
-	}
 
 	public async LoadLogicFolder(folderPath: string): Promise<IModule[]> {
 		return this.loadFolder<IModule>(folderPath, this.AddLogicModule);
-	}
-
-	public async LoadInteractionFolder(folderPath: string): Promise<IBitBotCommand[]> {
-		return this.loadFolder<IBitBotCommand>(folderPath, this.AddInteractionModule);
 	}
 
 	/**

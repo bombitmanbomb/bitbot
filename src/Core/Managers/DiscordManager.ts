@@ -1,5 +1,5 @@
 import type { BitBot } from "../BitBot";
-import Discord, { Client } from "discord.js";
+import Discord, { Client, GatewayIntentBits } from "discord.js";
 export class DiscordManager {
 	public Bot: BitBot;
 	public _discord: typeof Discord;
@@ -8,11 +8,10 @@ export class DiscordManager {
 	private _readeReject!: (value: PromiseLike<boolean> | boolean) => void;
 	private _readyPromise: Promise<boolean>;
 	private _clientReady: Promise<boolean>;
-	constructor(Bot: BitBot, intents: Discord.Intents) {
+	constructor(Bot: BitBot, intents: GatewayIntentBits[]) {
 		this.Bot = Bot;
 		this._discord = Discord;
-		this.Client = new this._discord.Client({ intents }); //!Discord 13
-		//this.Client = new this._discord.Client({fetchAllMembers:true, ws:{intents}}) //!DIscord 12
+		this.Client = new this._discord.Client({ intents });
 		this._clientReady = new Promise((res) => {
 			this.Client.once("ready", () => {
 				res(true);
@@ -35,7 +34,7 @@ export class DiscordManager {
 			return this.Client.login(this.Bot.Config.Tokens.Discord).then(
 				async () => {
 					const presence = this.Client.user?.setPresence({
-						activities: [{ name: "Everything", type: "WATCHING" }], //!Discord 13
+						activities: [{ name: "Everything", type: Discord.ActivityType.Watching }],
 						status: "online",
 					});
 					const hooks = this._clientReady.then(async () => {

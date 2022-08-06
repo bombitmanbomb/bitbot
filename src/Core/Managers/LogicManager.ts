@@ -1,6 +1,6 @@
 import type { BitBot } from "../BitBot";
 import { uniqueId } from "lodash";
-import { MessageEmbed, WebhookClient } from "discord.js";
+import { APIEmbed, WebhookClient } from "discord.js";
 import { Dictionary, List, Out } from "@bombitmanbomb/utils";
 import type Counter from "@pm2/io/build/main/utils/metrics/counter";
 import type Gauge from "@pm2/io/build/main/utils/metrics/gauge";
@@ -181,8 +181,8 @@ export class LogicManager {
 					(this.DebugWhitelist.length == 0 &&
 						!this.DebugBlackList.includes(event))
 				) {
-					const EMBEDS:MessageEmbed[] = [];
-					const Embed = new this.Bot.Discord._discord.MessageEmbed()
+					const EMBEDS: APIEmbed[] = [];
+					const Embed = new this.Bot.Discord._discord.EmbedBuilder()
 						.setTitle(event)
 						.setDescription(
 							`\`\`\`json\n${data != null
@@ -192,12 +192,12 @@ export class LogicManager {
 						);
 
 					for (const a of responses) {
-						Embed.addField(
+						Embed.addFields([
 							a.Key,
 							`\`\`\`json\n${a.Value != null
 								? JSON.stringify(a.Value, serializer).substring(0, 1000)
 								: "No Content"
-							}\`\`\``
+							}\`\`\``]
 						);
 						console.log("EVENTS", event, data, a);
 					}
@@ -219,7 +219,7 @@ export class LogicManager {
 						text: "Execution: " + new Date(delay).getTime() + "ms • " + runId,
 					});
 					Embed.setColor(color);
-					EMBEDS.push(Embed);
+					EMBEDS.push(Embed.data);
 					if (WHClient) WHClient.send({ embeds: EMBEDS });
 				}
 
