@@ -1,0 +1,12 @@
+.vscode/
+.idea/
+.vs/
+.env
+node_modules/
+AFOBot/
+pnpm-lock.yaml
+Examples/db.json
+Examples/Config.json
+lib
+types
+docs

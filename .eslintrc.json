@@ -1,0 +1,29 @@
+{
+	"env": {
+		"browser": false,
+		"commonjs": false,
+		"es6": true,
+		"node": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended"
+	],
+	"globals": {
+		"Atomics": "readonly",
+		"SharedArrayBuffer": "readonly"
+	},
+	"parserOptions": {
+		"ecmaVersion": 11
+	},
+	"rules": {
+		"indent": 0,
+		"quotes": ["error", "double"],
+		"semi": ["error", "always"],
+		"@typescript-eslint/no-explicit-any": 0
+	},
+	"parser": "@typescript-eslint/parser",
+	"plugins": ["@typescript-eslint"],
+	"ignorePatterns": ["/lib/*", "/docs/*"]
+}
