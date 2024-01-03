@@ -7,7 +7,7 @@ const messages = new Map();
 function makeError(Base: any) {
 	return class BitBotError extends Base {
 		constructor(key: string, ...args: any[]) {
-			let m = message(key, args);
+			const m = message(key, args);
 			super(m);
 			this[kCode as unknown as string] = key;
 			if (Error.captureStackTrace) Error.captureStackTrace(this, BitBotError);

@@ -23,7 +23,7 @@ export class VariableReplacement {
 		input: T,
 		replace: IReplacement,
 		maxDepth = 15,
-		currentDepth = 0
+		currentDepth = 0,
 	): T {
 		if (currentDepth > maxDepth) return input; // Prevent Circular Overflow
 		const NewObject = {} as Record<any, any>;
@@ -41,7 +41,7 @@ export class VariableReplacement {
 						propertyValue,
 						replace,
 						maxDepth,
-						currentDepth + 1
+						currentDepth + 1,
 					);
 					continue;
 				}
@@ -72,8 +72,8 @@ export class VariableReplacement {
 
 	public replaceObject<T extends Record<any, any>>(
 		input: T,
-		maxDepth = 15,
-		currentDepth = 0
+		//maxDepth = 15,
+		//currentDepth = 0,
 	): T {
 		return VariableReplacement.replaceObject<T>(input, this.Replacement);
 	}

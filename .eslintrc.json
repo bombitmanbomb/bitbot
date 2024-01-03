@@ -7,8 +7,8 @@
 	},
 	"extends": [
 		"eslint:recommended",
-		"plugin:@typescript-eslint/recommended",
-		"prettier"
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended"
 	],
 	"globals": {
 		"Atomics": "readonly",
@@ -21,8 +21,9 @@
 		"indent": 0,
 		"quotes": ["error", "double"],
 		"semi": ["error", "always"],
-		"no-explicit-any": 0
+		"@typescript-eslint/no-explicit-any": 0
 	},
 	"parser": "@typescript-eslint/parser",
-	"ignorePatterns": ["/lib/*"]
+	"plugins": ["@typescript-eslint"],
+	"ignorePatterns": ["/lib/*", "/docs/*"]
 }

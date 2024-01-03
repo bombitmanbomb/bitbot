@@ -34,7 +34,9 @@ export class DiscordManager {
 			return this.Client.login(this.Bot.Config.Tokens.Discord).then(
 				async () => {
 					const presence = this.Client.user?.setPresence({
-						activities: [{ name: "Everything", type: Discord.ActivityType.Watching }],
+						activities: [
+							{ name: "Everything", type: Discord.ActivityType.Watching },
+						],
 						status: "online",
 					});
 					const hooks = this._clientReady.then(async () => {
@@ -57,9 +59,9 @@ export class DiscordManager {
 								this.Bot.Events.emit(
 									"discordRoleChange",
 									guildMemberNew,
-									change
+									change,
 								);
-							}
+							},
 						);
 						this.Client.on("messageCreate", (message) => {
 							this.Bot.Events.emit("messageCreate", message);
@@ -69,7 +71,7 @@ export class DiscordManager {
 						});
 					});
 					return await Promise.all([presence, hooks]);
-				}
+				},
 			);
 		} catch (error) {
 			this.Bot.Events.emit("error", error);

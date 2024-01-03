@@ -8,7 +8,7 @@ import { Dictionary } from "@bombitmanbomb/utils";
 import { IModule } from "./Module";
 import { BBError } from "../Error/BBError";
 import fs from "fs";
-import path from "path"
+import path from "path";
 export class BitBot {
 	public static Intents = GatewayIntentBits;
 	public Config: IBitBotConfig;
@@ -20,7 +20,7 @@ export class BitBot {
 	constructor(
 		$config: IBitBotConfig,
 		DiscordIntents?: Discord.GatewayIntentBits[],
-		io?: PMX
+		io?: PMX,
 	) {
 		this.Config = $config;
 		this.Pm2 = io;
@@ -45,7 +45,7 @@ export class BitBot {
 	}
 	private OnDiscordRoleChange(
 		User: Discord.GuildMember,
-		RoleChange: unknown
+		RoleChange: unknown,
 	): void {
 		this.Logic.RunEvents("discord-role", { user: User, role: RoleChange });
 	}
@@ -56,12 +56,12 @@ export class BitBot {
 		this.Logic.RunEvents("discord-react", messageReaction);
 	}
 	private OnDiscordMemberRemove(
-		member: Discord.GuildMember | Discord.PartialGuildMember
+		member: Discord.GuildMember | Discord.PartialGuildMember,
 	): void {
 		this.Logic.RunEvents("discord-leave", member);
 	}
 	private OnDiscordMemberJoin(
-		member: Discord.GuildMember | Discord.PartialGuildMember
+		member: Discord.GuildMember | Discord.PartialGuildMember,
 	): void {
 		this.Logic.RunEvents("discord-join", member);
 	}
@@ -76,7 +76,6 @@ export class BitBot {
 		this.Logic.AddModule(this.Logic.CreateBoundLogicModule(mod));
 	}
 
-
 	public async LoadLogicFolder(folderPath: string): Promise<IModule[]> {
 		return this.loadFolder<IModule>(folderPath, this.AddLogicModule);
 	}
@@ -84,7 +83,11 @@ export class BitBot {
 	/**
 	 * Recursively load the files of a folder.
 	 */
-	public async loadFolder<T>(folderPath: string, cb?: (module: T) => any, modules: Promise<T>[] = []) {
+	public async loadFolder<T>(
+		folderPath: string,
+		cb?: (module: T) => any,
+		modules: Promise<T>[] = [],
+	) {
 		let absolute: string;
 		if (path.isAbsolute(folderPath)) {
 			absolute = folderPath;
@@ -93,13 +96,21 @@ export class BitBot {
 		}
 		for (const file of fs.readdirSync(absolute)) {
 			if (!file.startsWith(".")) {
-				let filePath = path.join(folderPath, file);
+				const filePath = path.join(folderPath, file);
 				try {
-					let stat = fs.lstatSync(filePath);
+					const stat = fs.lstatSync(filePath);
 					if (stat.isDirectory()) {
 						this.loadFolder<T>(filePath, cb, modules);
 					} else if (stat.isFile()) {
-						if (!(file.endsWith(".js") || file.endsWith(".mjs") || file.endsWith(".ts") || file.endsWith(".tjs"))) continue;
+						if (
+							!(
+								file.endsWith(".js") ||
+								file.endsWith(".mjs") ||
+								file.endsWith(".ts") ||
+								file.endsWith(".tjs")
+							)
+						)
+							continue;
 						const tempMod: any = import(path.join(folderPath, file));
 						modules.push(tempMod?.default ?? tempMod?.Module ?? tempMod); //? Handle CJS, ESM, and CJS
 					}
@@ -110,16 +121,15 @@ export class BitBot {
 		}
 		const asyncModules = await Promise.all(modules);
 		if (cb != null) {
-			for (let mod of asyncModules)
-				cb?.call?.(this, mod);
+			for (const mod of asyncModules) cb?.call?.(this, mod);
 		}
-		return asyncModules
+		return asyncModules;
 	}
 
 	public async RunEvents(
 		event: string,
 		data: unknown,
-		module: string | string[] | false = false
+		module: string | string[] | false = false,
 	): Promise<Dictionary<string, unknown>> {
 		return this.Logic.RunEvents(event, data, module);
 	}

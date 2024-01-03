@@ -112,7 +112,7 @@ export class LogicManager {
 					async (cb: (scriptResponse: unknown) => unknown) => {
 						if (+this.debug) console.log("Firing Action %s", id);
 						cb(await action.script(this, Logic));
-					}
+					},
 				);
 			} else {
 				this.Bot.Error(new BBError.Error("MODULE_MISSING_SCRIPT", Logic.id), {
@@ -132,7 +132,7 @@ export class LogicManager {
 	public async RunEvents(
 		event: string,
 		data?: unknown,
-		moduleList: string | string[] | false = false
+		moduleList: string | string[] | false = false,
 	): Promise<Dictionary<string, unknown>> {
 		const runTime = new Date();
 		const runId = this.uniqueId();
@@ -185,20 +185,22 @@ export class LogicManager {
 					const Embed = new this.Bot.Discord._discord.EmbedBuilder()
 						.setTitle(event)
 						.setDescription(
-							`\`\`\`json\n${data != null
-								? JSON.stringify(data, serializer).substring(0, 1000)
-								: "No Content"
-							}\`\`\``
+							`\`\`\`json\n${
+								data != null
+									? JSON.stringify(data, serializer).substring(0, 1000)
+									: "No Content"
+							}\`\`\``,
 						);
 
-					for (const a of responses) {
-						Embed.addFields([
-							a.Key,
-							`\`\`\`json\n${a.Value != null
-								? JSON.stringify(a.Value, serializer).substring(0, 1000)
-								: "No Content"
-							}\`\`\``]
-						);
+					for (const a of responses.IteratorList()) {
+						Embed.addFields({
+							name: a.Key,
+							value: `\`\`\`json\n${
+								a.Value != null
+									? JSON.stringify(a.Value, serializer).substring(0, 1000)
+									: "No Content"
+							}\`\`\``,
+						});
 						console.log("EVENTS", event, data, a);
 					}
 					const delay = Math.abs(runTime.getTime() - new Date().getTime());
@@ -234,7 +236,7 @@ export class LogicManager {
 		message: string,
 		name = "Debug",
 		title = "Debug",
-		override = false
+		override = false,
 	): void {
 		if (+this.debug || override) {
 			if (WHClient)
@@ -247,7 +249,7 @@ export class LogicManager {
 									name,
 									value: `\`\`\`json\n${JSON.stringify(message).substring(
 										0,
-										1000
+										1000,
 									)}\n\`\`\``,
 								},
 							],

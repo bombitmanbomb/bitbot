@@ -40,7 +40,7 @@ export class LogicModule {
 	public async RunModule(
 		Manager: LogicManager,
 		hook: string,
-		data: unknown
+		data: unknown,
 	): Promise<unknown> {
 		try {
 			if (this.Script) return this.Script(Manager, hook, data);
